@@ -1,5 +1,6 @@
 package dev.gustavo.admsoftwaretest.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,11 +48,24 @@ public class PostActivity extends AppCompatActivity {
         title = findViewById(R.id.postActivityTitle);
         body = findViewById(R.id.postActivityBody);
         delete = findViewById(R.id.postActivityDelete);
+        edit = findViewById(R.id.postActivityEdit);
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewModel.deletePost(post);
+            }
+        });
+
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), EditPostActivity.class);
+                intent.putExtra("userId", post.getUserId());
+                intent.putExtra("id", post.getId());
+                intent.putExtra("title", post.getTitle());
+                intent.putExtra("body", post.getBody());
+                startActivity(intent);
             }
         });
 
