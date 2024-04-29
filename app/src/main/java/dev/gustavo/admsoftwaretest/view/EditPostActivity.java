@@ -11,10 +11,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import dev.gustavo.admsoftwaretest.R;
+import dev.gustavo.admsoftwaretest.viewmodel.EditPostViewModel;
 
 public class EditPostActivity extends AppCompatActivity {
+
+    private EditPostViewModel viewModel;
 
     private EditText etitle;
     private EditText ebody;
@@ -35,6 +39,8 @@ public class EditPostActivity extends AppCompatActivity {
         String title = getIntent().getStringExtra("title");
         String body = getIntent().getStringExtra("body");
 
+        viewModel = new ViewModelProvider(this).get(EditPostViewModel.class);
+
         etitle = findViewById(R.id.editTitle);
         ebody = findViewById(R.id.editBody);
         edit = findViewById(R.id.edit);
@@ -44,8 +50,12 @@ public class EditPostActivity extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                viewModel.edit(userId, id, etitle.getText().toString().trim(), ebody.getText().toString().trim());
             }
+        });
+
+        viewModel.save.observe(this, it->{
+            finish();
         });
 
     }

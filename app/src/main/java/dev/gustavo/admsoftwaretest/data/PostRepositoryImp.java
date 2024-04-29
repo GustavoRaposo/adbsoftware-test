@@ -11,6 +11,7 @@ import dev.gustavo.admsoftwaretest.data.localdatasource.dao.PostDao;
 import dev.gustavo.admsoftwaretest.data.localdatasource.entity.NewPostEntity;
 import dev.gustavo.admsoftwaretest.data.localdatasource.entity.PostEntity;
 import dev.gustavo.admsoftwaretest.data.localdatasource.response.DeletePostCallback;
+import dev.gustavo.admsoftwaretest.data.localdatasource.response.EditPostCallback;
 import dev.gustavo.admsoftwaretest.data.localdatasource.response.GetLocalPostListResponse;
 import dev.gustavo.admsoftwaretest.data.localdatasource.response.GetLocalPostResponse;
 import dev.gustavo.admsoftwaretest.data.localdatasource.response.NewPostCallback;
@@ -142,6 +143,19 @@ public class PostRepositoryImp implements PostRepository {
             public void run() {
                 PostEntity entity = new PostEntity(post.getUserId(), post.getId(), post.getTitle(), post.getBody());
                 dao.deletePost(entity);
+                callback.onResponse();
+            }
+        });
+    }
+
+    @Override
+    public void update(int userId, int id, String title, String body, EditPostCallback callback) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                PostEntity entity = new PostEntity(userId, id, title, body);
+                dao.updatePost(entity);
                 callback.onResponse();
             }
         });

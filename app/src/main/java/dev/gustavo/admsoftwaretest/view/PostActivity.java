@@ -28,6 +28,8 @@ public class PostActivity extends AppCompatActivity {
     private Button delete;
     private Post post;
 
+    private int id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +41,7 @@ public class PostActivity extends AppCompatActivity {
             return insets;
         });
 
-        int id = getIntent().getIntExtra("id", 1);
+        id = getIntent().getIntExtra("id", 1);
         Log.i("POST", "Post ID: " + id);
 
         viewModel = new ViewModelProvider(this).get(PostViewModel.class);
@@ -79,7 +81,11 @@ public class PostActivity extends AppCompatActivity {
         viewModel.delete.observe(this, delete ->{
             finish();
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         viewModel.getPost(id);
     }
 }
